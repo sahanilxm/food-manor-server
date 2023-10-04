@@ -12,10 +12,10 @@ const getRestaurants = async (req, res) =>{
             }
         });
         response = await response.json();
-        res.status(200).json(response);
+        res.status(200).json([response, `${SWIGGY_RESTAURANT_API}lat=${lat}&lng=${lng}`]);
     } catch (error) {
         res.status(500).json({
-            data:[],
+            data:[`${SWIGGY_RESTAURANT_API}lat=${lat}&lng=${lng}`],
             success:false,
             message:"Something Went Wrong,Can't fetch Restaurant right now.",
         });
