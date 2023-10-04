@@ -15,7 +15,7 @@ const getRestaurants = async (req, res) =>{
         });
         response = await response.json();
         if(!response.ok){
-            throw error ;   
+            throw new Error('Network response was not OK.') ;   
         }
         res.status(200).json(response);
     } catch (error) {
