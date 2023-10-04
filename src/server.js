@@ -14,6 +14,9 @@ const getRestaurants = async (req, res) =>{
             }
         });
         response = await response.json();
+        if(!response.ok){
+            throw error ;   
+        }
         res.status(200).json(response);
     } catch (error) {
         res.status(500).json({
