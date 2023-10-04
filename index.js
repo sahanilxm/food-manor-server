@@ -24,7 +24,7 @@ const cors = require('cors');
 const fetch = require('cross-fetch');
 
 const app = express();
-const port = process.env.PORT  || 3000;
+const PORT = 3000;
 app.use(cors());
 
 
@@ -83,4 +83,8 @@ app.get('/api/menu', (req, res) => {
       console.error(error);
       res.status(500).send('An error occurred');
     });
+});
+
+app.listen(PORT, ()=>{
+    console.log(`Server started on Port : ${PORT}`);
 });
