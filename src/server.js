@@ -14,6 +14,7 @@ const getRestaurants = async (req, res) =>{
         response = await response.json();
         res.status(200).json([response, `${SWIGGY_RESTAURANT_API}lat=${lat}&lng=${lng}`]);
     } catch (error) {
+        const {lat, lng} = req.query;
         res.status(500).json({
             data:[`${SWIGGY_RESTAURANT_API}lat=${lat}&lng=${lng}`],
             success:false,
