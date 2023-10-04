@@ -4,6 +4,7 @@ const getRestaurants = async (req, res) =>{
     try {
         const {lat, lng} = req.query;
         const URL = `${SWIGGY_RESTAURANT_API}lat=${lat}&lng=${lng}`;
+        console.log(URL);
         let response =await fetch(URL, {
             headers:{
                 'Access-Control-Allow-Origin':'*',
@@ -11,6 +12,9 @@ const getRestaurants = async (req, res) =>{
                 Accept:'application/json; charset=UTF-8',
             }
         });
+        if(!response.ok){
+            throw error;
+        }
         response = await response.json();
         res.status(200).json(response);
 
