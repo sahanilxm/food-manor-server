@@ -1,3 +1,5 @@
+const { fetch } = require('cross-fetch');
+
 const { SWIGGY_RESTAURANT_API, SWIGGY_RESTAURANT_MENU_API } = require("./server-config");
 
 const getRestaurants = async (req, res) =>{
@@ -7,13 +9,13 @@ const getRestaurants = async (req, res) =>{
         let response =await fetch(URL, {
             headers:{
                 'Access-Control-Allow-Origin':'*',
-                'User-Agent':"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.89 Safari/537.36"
+                'User-Agent':"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.89 Safari/537.36",
+                Accept:'application/json; charset=UTF-8',
             }
         });
         response = await response.json();
         res.status(200).json(response);
     } catch (error) {
-        const {lat, lng} = req.query;
         res.status(500).json({
             data:[],
             success:false,
