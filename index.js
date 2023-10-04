@@ -1,20 +1,86 @@
+// const express = require('express');
+// const cors = require('cors');
+
+// const { PORT } = require('./src/server-config');
+// const Server = require('./src/server');
+
+// const setupAndRunServer = () =>{
+//     const app = express();
+
+//     app.use(cors());
+
+//     app.get('/restaurants', Server.getRestaurants);
+//     app.get('/restaurants/menu', Server.getRestaurantMenu);
+
+//     app.listen(PORT, ()=>{
+//         console.log(`Server started runing at Port number: ${PORT}`);
+//     })
+// };
+
+// setupAndRunServer();
+
 const express = require('express');
 const cors = require('cors');
+const fetch = require('cross-fetch');
 
-const { PORT } = require('./src/server-config');
-const Server = require('./src/server');
+const app = express();
+const port = process.env.PORT  || 3000;
+app.use(cors());
 
-const setupAndRunServer = () =>{
-    const app = express();
 
-    app.use(cors());
+app.get('/api/restaurants', (req, res) => {
+  const { lat, lng } = req.query;
+  console.log(req.query);
+  const url = `https://www.swiggy.com/dapi/restaurants/list/v5?lat=${lat}&lng=${lng}&page_type=DESKTOP_WEB_LISTING`;
 
-    app.get('/restaurants', Server.getRestaurants);
-    app.get('/restaurants/menu', Server.getRestaurantMenu);
-
-    app.listen(PORT, ()=>{
-        console.log(`Server started runing at Port number: ${PORT}`);
+  fetch(url, {
+    headers: {
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36'
+    
+    }
+  })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
     })
-};
+    .then(data => {
+      res.json(data);
+    })
+    .catch(error => {
+      console.error(error);
+      res.status(500).send('An error occurred');
+    });
+});
 
-setupAndRunServer();
+app.get('/api/menu', (req, res) => {
+  const { lat, lng, restaurantId } = req.query;
+  console.log(req.query);
+  const url = `https://www.swiggy.com/dapi/menu/pl?page-type=REGULAR_MENU&complete-menu=true&lat=${lat}&lng=${lng}&submitAction=ENTER&restaurantId=${restaurantId}`;
+
+
+  fetch(url, {
+    headers: {
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36'
+    
+    }
+  })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    })
+    .then(data => {
+      res.json(data);
+    })
+    .catch(error => {
+      console.error(error);
+      res.status(500).send('An error occurred');
+    });
+});
