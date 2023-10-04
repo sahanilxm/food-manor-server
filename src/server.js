@@ -5,7 +5,9 @@ const { SWIGGY_RESTAURANT_API, SWIGGY_RESTAURANT_MENU_API } = require("./server-
 const getRestaurants = async (req, res) =>{
     try {
         const {lat, lng} = req.query;
+        console.log(lat, lng);
         const URL = `${SWIGGY_RESTAURANT_API}lat=${lat}&lng=${lng}`;
+        console.log(URL);
         let response =await fetch(URL, {
             headers:{
                 'Access-Control-Allow-Origin':'*',
@@ -14,6 +16,7 @@ const getRestaurants = async (req, res) =>{
             }
         });
         response = await response.json();
+        console.log(response);
         res.status(200).json(response);
     } catch (error) {
         res.status(500).json({
